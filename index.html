@@ -1,12 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Formulaire AJAX</title>
+    <script type="text/javascript" src="getXHR.js"></script>
 </head>
 <body>
 <form action="validation.php" method="post">
-
+    <div>
+        <label for="name">Nom : </label>
+        <input type="text" id="name" name="name" />
+    </div>
+    <div>
+        <label for="firstName">Prénom : </label>
+        <input type="text" id="firstName" name="firstName" />
+    </div>
+    <div>
+        <label for="mail">Mail : </label>
+        <input type="text" id="mail" name="mail" />
+    </div>
+    <div>
+        <label for="password">Mot de passe : </label>
+        <input type="password" id="password" name="password" />
+    </div>
+    <div>
+        <input type="reset" value="Effacer" />
+        <input type="submit" value="Envoyer" />
+    </div>
+    <div>
+        <p id="validation" ondblclick="sendForm()">Envoyer données</p>
+    </div>
 </form>
+<script type="text/javascript">
+    var sendForm = function() {
+        var toto = getXHR();
+        toto.onreadystatechange = function() {
+            if(toto.readyState == 4 && (toto.status == 200 || toto.status == 0)) {
+                console.log(toto.responseText);
+            }
+        }
+
+        var name = document.getElementById('name').value;
+        var firstName = document.getElementById('firstName').value;
+        var mail = document.getElementById('mail').value;
+        var password = document.getElementById('password').value;
+        var data = "name=" + name + "&firstName=" + firstName + "&mail=" + mail + "&password=" + password;
+        toto.open("POST", "validation.php", true);
+        toto.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        toto.send(data);
+    };
+</script>
 </body>
 </html>
